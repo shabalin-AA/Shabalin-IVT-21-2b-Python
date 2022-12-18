@@ -1,5 +1,7 @@
 from pyDatalog import pyDatalog
 from random import randrange
+import math
+from gmpy2 import mpz
 
 """
 посчитать сумму ряда 0-999999
@@ -8,11 +10,10 @@ from random import randrange
 их произведение
 """
 
-pyDatalog.create_terms('sum_of_range, N, Sum_of_range, medium, arr, Medium, median, Median, prod, Prod')
+pyDatalog.create_terms('sum_of_range, N, A, Sum_of_range, medium, arr, Medium, median, Median, prod, Prod, fact')
 
 
-sum_of_range[N] = N + sum_of_range[N-1]
-sum_of_range[0] = 0
+sum_of_range[N] = (0 + N) / 2
 print(sum_of_range[999]==Sum_of_range)
 print()
 
@@ -22,17 +23,21 @@ print(medium[999]==Medium)
 print()
 
 
-n = 1000
+n = 1000000
+arr = []
 for i in range(n):
-    arr[i] = randrange(1, 10)
+    arr.append(randrange(1, 10))
 arr.sort()
 
-median[N] = arr[N/2] if n % 2 == 0 else (arr[(N+1)/2] + arr[N/2]) / 2
-print(median[n]==Median)
+median = arr[n//2] if n%2==0 else (arr[(n+1)//2] + arr[n//2]) / 2
+print(median==Median)
 print()
 
+fact[N] = N * fact[N-1]
+fact[1] = 1
 
-prod[N] = arr[N-1] * prod[N-1]
-prod[1] = arr[0]
-print(prod[n]==Prod)
+prod = fact[max(arr) - min(arr)] ** (n / (max(arr) - min(arr)))
+print(prod==Prod)
 print()
+
+print((math.prod(arr)))
