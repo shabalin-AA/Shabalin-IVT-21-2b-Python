@@ -1,17 +1,26 @@
-import datetime
+from datetime import datetime
 import json
 
 
 
 class Printing:
-    def __init__(self):
-        self.__name = "name"
-        self.__year = 1
+    def __init__(self, name):
+        self.__name = name
+        self.__year = datetime.now().year
 
 
-    def print(self):
-        print("Name:", self.__name)
-        print("Year:", self.__year)
+    @property
+    def name(self):
+        return self.__name
+
+
+    @property
+    def year(self):
+        return self.__year
+
+
+    def __repr__(self):
+        return "Printing " + repr(self.__name) + " " + str(self.__year)
 
 
     def json_load(self, json_filepath: str):
@@ -32,14 +41,23 @@ class Printing:
 
 
 class Magazine(Printing):
-    def __init__(self):
-        super().__init__()
-        self.__date = datetime.datetime(2000, 1, 1)
+    def __init__(self, name):
+        super().__init__(name)
+        self.__date = datetime.now()
 
 
-    def print(self):
-        super().print()
-        print("Date:", self.__date)
+    @property
+    def date(self):
+        return self.__date
+
+
+    @property
+    def name(self):
+        return super().name
+
+
+    def __repr__(self):
+        return "Magazine " + repr(super().name) + " " + str(self.__date.day) + "." + str(self.__date.month) + "." + str(self.__date.year)
 
 
     def json_load(self, json_filepath: str):
@@ -47,7 +65,7 @@ class Magazine(Printing):
             obj = json.load(f)
             self.__name = obj["name"]
             self.__year = obj["year"]
-            self.__date = datetime.datetime(
+            self.__date = datetime(
                 obj["date"]["year"],
                 obj["date"]["month"],
                 obj["date"]["day"]
@@ -63,68 +81,6 @@ class Magazine(Printing):
                 "month": self.__date.month,
                 "day":   self.__date.day
             }
-        }
-        with open(json_filepath, 'w') as f:
-            json.dump(to_json, f)
-
-
-
-class Book(Printing):
-    def __init__(self):
-        super().__init__()
-        self.__genre = "genre"
-
-
-    def print(self):
-        super().print()
-        print("Genre:", self.__genre)
-
-
-    def json_load(self, json_filepath: str):
-        with open(json_filepath) as f:
-            obj = json.load(f)
-            self.__name = obj["name"]
-            self.__year = obj["year"]
-            self.__genre = obj["genre"]
-
-
-    def json_save(self, json_filepath: str):
-        to_json = {
-            "name": self.__name,
-            "year": self.__year,
-            "genre": self.__genre
-        }
-        with open(json_filepath, 'w') as f:
-            json.dump(to_json, f)
-
-
-
-class Schoolbook(Book):
-    def __init__(self):
-        super().__init__()
-        self.__subject = "subject"
-
-
-    def print(self):
-        super().print()
-        print("Subject:", self.__subject)
-
-
-    def json_load(self, json_filepath: str):
-        with open(json_filepath) as f:
-            obj = json.load(f)
-            self.__name = obj["name"]
-            self.__year = obj["year"]
-            self.__genre = obj["genre"]
-            self.__subject = obj["subject"]
-
-
-    def json_save(self, json_filepath: str):
-        to_json = {
-            "name": self.__name,
-            "year": self.__year,
-            "genre": self.__genre,
-            "subject": self.__subject
         }
         with open(json_filepath, 'w') as f:
             json.dump(to_json, f)
