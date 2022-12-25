@@ -1,3 +1,7 @@
+from bs4 import BeautifulSoup
+import requests
+
+
 def reduce(list, acc, fn):
     for el in list:
         acc = fn(el, acc)
@@ -19,5 +23,18 @@ def f2(x):
     return x + 5
 
 
-print(reduce(l, 1, f))
-print(map(l, f2))
+#print(reduce(l, 1, lambda x, acc: x * acc))
+#print(map(l, lambda x: x + 5))
+
+
+url = 'https://zenrows.com'
+page = requests.get(url)
+
+filtered_news = []
+all_news = []
+
+soup = BeautifulSoup(page.content, 'html.parser')
+
+print(soup.title.string)
+
+#https://khashtamov.com/ru/pandas-introduction/
