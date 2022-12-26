@@ -1,5 +1,4 @@
-from bs4 import BeautifulSoup
-import requests
+import pandas as pd
 
 
 def reduce(list, acc, fn):
@@ -16,25 +15,17 @@ def map(list, fn):
 
 l = [1, 2, 3, 4, 5]
 
-def f(x, acc):
-    return acc * x
-
-def f2(x):
-    return x + 5
-
-
 #print(reduce(l, 1, lambda x, acc: x * acc))
 #print(map(l, lambda x: x + 5))
 
 
-url = 'https://zenrows.com'
-page = requests.get(url)
+titanic = pd.read_csv('titanic.csv', header = 0, delimiter = ',',
+    names = ["PassengerID","Name","PClass","Age","Sex","Survived","SexCode"])[:20]
 
-filtered_news = []
-all_news = []
+titanic_male_survived = titanic[(titanic.Sex == 'male') & (titanic.Survived == 1)]
 
-soup = BeautifulSoup(page.content, 'html.parser')
+print(titanic_male_survived)
 
-print(soup.title.string)
+average_age = reduce(titanic_male_survived['Age'], 0, lambda x, acc: x + acc if x > 0 else acc) / len(titanic_male_survived['Age'])
 
-#https://khashtamov.com/ru/pandas-introduction/
+print(average_age)
